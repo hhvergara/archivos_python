@@ -29,10 +29,24 @@ def ej1():
     las líneas para obtener el total del archivo e imprimirlo en pantalla
     '''
 
+    fi = open('texto.txt', 'r')
+    line = fi.readline()
+
+    with open('texto.txt') as fi:
+        for line in fi:
+            cantidad_letras += len(line)
+        print('cantidad de letras:', cantidad_letras)
+    fi.close()
+
+
+
+
+
 
 def ej2():
     print("Transcribir!")
     cantidad_letras = 0
+    entrada_texto = ""
     '''
     Deberá abrir un archivo txt para escritura (un archivo nuevo)
     Luego mediante un bucle deberá pedir por consola que
@@ -49,6 +63,17 @@ def ej2():
     NOTA: Recuerde agregar el salto de línea "\n" a cada entrada
     de texto de la consola antes de copiar la archivo.
     '''
+    fo = open('nuevo.txt', 'w')
+    while (1):
+        entrada_texto = str (input("ingrese texto:\n"))
+        cantidad_letras += len (entrada_texto)
+        if entrada_texto != "":
+            
+            fo.write(entrada_texto + "\n")
+        else:
+            break
+    print("la cantidad de caracteres ingresados es de:",cantidad_letras)
+    fo = fo.close()
 
 
 def ej3():
@@ -154,7 +179,7 @@ def ej4():
 
 if __name__ == '__main__':
     print("Ejercicios de práctica")
-    #ej1()
-    #ej2()
+    ej1()
+    ej2()
     #ej3()
     #ej4()

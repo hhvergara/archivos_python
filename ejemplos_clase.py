@@ -26,7 +26,9 @@ def diccionario():
     # Crear diccionarios de idioma
     portugues = {}
     espanol = {}
-
+    transistores = {}
+    transistores["NPN"]="BJT"
+    transistores["NCHANNEL"]="FET"
     portugues['hello'] = 'oi'
     portugues['by'] = 'tchau'
     espanol['hello'] = 'hola'
@@ -34,7 +36,7 @@ def diccionario():
 
     translate('hello', espanol)  # print --> hola
     translate('by', portugues)   # print --> tchau
-
+    translate("NPN",transistores)
     key = 'hell'
     try:
         print(portugues[key])      # lanza una excepción
