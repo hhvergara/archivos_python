@@ -16,6 +16,9 @@ __email__ = "alumnos@inove.com.ar"
 __version__ = "1.1"
 
 
+import csv
+import re
+
 def ej1():
     print("Cuenta caracteres")
     cantidad_letras = 0
@@ -79,6 +82,11 @@ def ej2():
 def ej3():
     print("Escrutinio de los alquileres de Capital Federal")
     cantidad_ambientes = 2
+    hint_row = []
+    promedio = 0
+    lista_de_precios = []
+
+
 
     '''
     Realizar un prorgrama que solicite la cantidad de
@@ -93,6 +101,36 @@ def ej3():
     4) Obtener el mínimo valor de alquiler en "pesos"
     de la cantidad de ambientes deseados.
     '''
+
+    promedio = 0
+    # Lectura de archivo CSV con diccionario
+    with open('propiedades.csv') as csvfile:
+        data = list(csv.DictReader(csvfile))
+    
+    #Obtenemos la posición de las filas en pesos y con cantidad de ambientes deseados:
+    posicion = 0
+    for i in range(len(data)):
+        row = data[i]
+        moneda = str(row.get('moneda'))
+        ambientes = str(row.get('ambientes'))
+        precio = float(row.get("precio"))
+
+
+        if moneda == "ARS" and ambientes == str(cantidad_ambientes):
+            hint_row.insert (posicion,i)
+            lista_de_precios.insert(posicion,precio)
+            posicion += 1
+            promedio += precio
+            promedio/= len(hint_row)
+    # 1.
+    print("la cantidad de alquileres en pesos es:",len(hint_row))
+    # 2.
+    print("El promedio es de AR$",promedio)
+    # 3.
+    print("El precio minimo es de AR$:",min(lista_de_precios))
+    # 4.
+    print("El precio máximo es de AR$:",max(lista_de_precios))
+
 
 
 def ej4():
@@ -179,7 +217,7 @@ def ej4():
 
 if __name__ == '__main__':
     print("Ejercicios de práctica")
-    ej1()
-    ej2()
+    #ej1()
+    #ej2()
     #ej3()
-    #ej4()
+    ej4()
