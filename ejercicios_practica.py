@@ -19,6 +19,54 @@ __version__ = "1.1"
 import csv
 import re
 
+
+def time_to_time(time="00:00:00"):
+    """
+    Recibe el horario en formato string 00:00:00 (horas:minutos:segundos)
+    y lo devuelve en formato int en segundos
+    """
+
+    int_time=0
+    if time == "":
+        return 0
+    else:
+        int_time = (int (time [7])) + (int(time [6]) * 10) 
+        int_time += (int (time [4]) + (int (time [3]) * 10)) * 60
+        int_time += (int (time [1]) + (int (time [0]) * 10)) * 3600
+        return int_time
+
+def dataset_get_time(dataset ="",column = "Division",category = "MPRO",activity="Swim"):
+    """
+    La función busca dentro el csv la columna deseada, filtra por categoría de esta columna
+    y devuelve los valores de max, min y promedio de tiempo en segundos con formato int. del campo deseado.
+    """
+    posicion = 0
+    promedio = 0
+    tiempo_int = 0
+    acumulador = 0
+    hit_row=[]
+    registro_de_tiempos = []
+    times = []
+    # Lectura de archivo CSV con diccionario
+    with open(dataset) as csvfile:
+        data = list(csv.DictReader(csvfile))
+        
+    for i in range(len(data)):
+        row = data[i]
+        division = str(row.get(column))
+        if division == category:
+            tiempo_int = time_to_time(str(row.get(activity)))
+            if tiempo_int != 0:
+                registro_de_tiempos.insert(posicion,tiempo_int)
+                hit_row.insert(posicion,i)
+                posicion += 1
+                acumulador += tiempo_int
+                promedio= acumulador / len(hit_row)
+    times.insert(0,min(registro_de_tiempos))
+    times.insert(0,max(registro_de_tiempos))
+    times.insert(2,promedio)
+    return times
+
 def ej1():
     print("Cuenta caracteres")
     cantidad_letras = 0
@@ -40,11 +88,6 @@ def ej1():
             cantidad_letras += len(line)
         print('cantidad de letras:', cantidad_letras)
     fi.close()
-
-
-
-
-
 
 def ej2():
     print("Transcribir!")
@@ -77,7 +120,6 @@ def ej2():
             break
     print("la cantidad de caracteres ingresados es de:",cantidad_letras)
     fo = fo.close()
-
 
 def ej3():
     print("Escrutinio de los alquileres de Capital Federal")
@@ -131,11 +173,9 @@ def ej3():
     # 4.
     print("El precio máximo es de AR$:",max(lista_de_precios))
 
-
-
 def ej4():
     print("Ahora sí! buena suerte :)")
-
+    
     '''
     Para poder realizar este ejercicio deberán descargarse el
     dataset "2019 Ironman world championship results" del siguiente
@@ -213,11 +253,23 @@ def ej4():
     de Python que resuelva este problema.
 
     '''
+    dataset = "datasets_575912_1042673_2019 Ironman World Championship Results.csv"
+    actividad = ["Swim","Bike","Run"]
+    categoria = ["MPRO","M45-49","M25-29","M18-24"]
+
+
+    for i in range(len(categoria)):
+        print("----------------------------------\n")
+        for k in range(len(actividad)):
+            time = dataset_get_time(dataset,"Division",categoria[i],actividad[k])
+            print("Categoría:",categoria[i],"Actividad:",actividad[k],"\nTiempo [minutos]:")
+            #print("maximo:",time[0]/60,", mínimo:",time[1]/60,", promedio:",time[2]/60)
+            print("maximo:{0:.2f}, mínimo:{1:.2f}, promedio:{2:.2f}".format((time[0]/60),(time[1]/60),(time[2]/60)))
 
 
 if __name__ == '__main__':
     print("Ejercicios de práctica")
-    #ej1()
-    #ej2()
-    #ej3()
+    ej1()
+    ej2()
+    ej3()
     ej4()
