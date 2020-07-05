@@ -65,6 +65,7 @@ def dataset_get_time(dataset ="",column = "Division",category = "MPRO",activity=
     times.insert(0,min(registro_de_tiempos))
     times.insert(0,max(registro_de_tiempos))
     times.insert(2,promedio)
+    csvfile.close()
     return times
 
 def ej1():
