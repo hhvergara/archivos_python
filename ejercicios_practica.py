@@ -29,7 +29,7 @@ def time_to_time(time="00:00:00"):
     y lo devuelve en formato int en segundos
     """
     
-    int_time = 0
+    #int_time = 0
     if time == "":
         return 0
     else:
