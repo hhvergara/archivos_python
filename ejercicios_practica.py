@@ -28,15 +28,21 @@ def time_to_time(time="00:00:00"):
     Recibe el horario en formato string 00:00:00 (horas:minutos:segundos)
     y lo devuelve en formato int en segundos
     """
-
-    int_time=0
+    
+    int_time = 0
     if time == "":
         return 0
     else:
+        
+        time_list = list(time.split(":"))
+        map(int(), time_list)
+        return int(time_list[0]) * 3600 + int(time_list[1]) * 60 + int(time_list[2])
+        '''
         int_time = (int (time [7])) + (int(time [6]) * 10) 
         int_time += (int (time [4]) + (int (time [3]) * 10)) * 60
         int_time += (int (time [1]) + (int (time [0]) * 10)) * 3600
         return int_time
+        '''
             # InoveTip: En este caso en vez de sumar los caracteres por separados es más
     # práctico y seguro usar split(':') y obtener así la hora, minuto, segundos
     # ya armados como string para pasar a numero. Es más seguro por si te llega a venir
@@ -49,7 +55,9 @@ def time_to_time(time="00:00:00"):
 # no te digo que de 100% bien la sintaxis pero al menos lo esperable si, quiero decir con esto
 # que podes tener alguna linea de código de más de 79 caracteres pero no estos casos que visualmente
 # se notan a la legua
-def dataset_get_time(dataset ="",column = "Division",category = "MPRO",activity="Swim"):
+
+
+def dataset_get_time(dataset="", column="Division", category="MPRO", activity="Swim"):
     """
     La función busca dentro el csv la columna deseada, filtra por categoría de esta columna
     y devuelve los valores de max, min y promedio de tiempo en segundos con formato int. del campo deseado.
@@ -305,7 +313,7 @@ def ej4():
 
 if __name__ == '__main__':
     print("Ejercicios de práctica")
-    ej1()
-    ej2()
-    ej3()
+    #ej1()
+    #ej2()
+    #ej3()
     ej4()
