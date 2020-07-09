@@ -19,7 +19,10 @@ __version__ = "1.1"
 import csv
 import re
 
-
+# InoveTip: El nombre de la funcion no me termina de decir a que convierte
+# el time, porque lo convierte a ¿¿time??, sugerencias
+# strtime_to_time
+# time_to_seconds
 def time_to_time(time="00:00:00"):
     """
     Recibe el horario en formato string 00:00:00 (horas:minutos:segundos)
@@ -34,7 +37,18 @@ def time_to_time(time="00:00:00"):
         int_time += (int (time [4]) + (int (time [3]) * 10)) * 60
         int_time += (int (time [1]) + (int (time [0]) * 10)) * 3600
         return int_time
+            # InoveTip: En este caso en vez de sumar los caracteres por separados es más
+    # práctico y seguro usar split(':') y obtener así la hora, minuto, segundos
+    # ya armados como string para pasar a numero. Es más seguro por si te llega a venir
+    # en un caso hipotetico 6:30:15 en vez de 06:30:15
 
+# InoveTip: A modo sintazis lo ideal seria:
+# def dataset_get_time(dataset="", column="Division", category="MPRO", activity="Swim"):
+# Se que es engorroso pero cada tanto copiate el código en "pep8online" para chequear estas cosas
+# porque muchos "recluters" lo primero que hacen es correr tu código en un unittest de pep8,
+# no te digo que de 100% bien la sintaxis pero al menos lo esperable si, quiero decir con esto
+# que podes tener alguna linea de código de más de 79 caracteres pero no estos casos que visualmente
+# se notan a la legua
 def dataset_get_time(dataset ="",column = "Division",category = "MPRO",activity="Swim"):
     """
     La función busca dentro el csv la columna deseada, filtra por categoría de esta columna
@@ -57,11 +71,24 @@ def dataset_get_time(dataset ="",column = "Division",category = "MPRO",activity=
         if division == category:
             tiempo_int = time_to_time(str(row.get(activity)))
             if tiempo_int != 0:
+                # InoveTip
+                # -----------------------------------------------
                 registro_de_tiempos.insert(posicion,tiempo_int)
                 hit_row.insert(posicion,i)
                 posicion += 1
+                # Veo que no hay un suo posterior de "posicion" y solo se
+                # usa para colocar los elementos en las listas,
+                # y por otro lado veo que siempre es incremental.
+                # En este caso donde "posicion" no se le está dando
+                # otro uso y siempre es incremental utilizar directamnete
+                # el método append
+                # -----------------------------------------------
                 acumulador += tiempo_int
-                promedio= acumulador / len(hit_row)
+                # Veo que se está calculando el promedio en cada vuelta de loop
+                # pero finalmente le promedio se usa el salir del loop,
+                # lo más eficiente es diretamente realizar el promedio
+                # fuera del loop
+                promedio= acumulador / len(hit_row) # Ojo con ese signo igual (sintaxis) :)
     times.insert(0,min(registro_de_tiempos))
     times.insert(0,max(registro_de_tiempos))
     times.insert(2,promedio)
@@ -162,7 +189,9 @@ def ej3():
         if moneda == "ARS" and ambientes == str(cantidad_ambientes):
             hint_row.insert (posicion,i)
             lista_de_precios.insert(posicion,precio)
-            posicion += 1
+            posicion += 1   # InoveTip:  Mismo tip de append (ver comentario más arriba)
+            # InoveTip:  No me puse a hacer la equivalencia, pero este promedio por sumas sucesivas
+            # en donde el "len" va variando, es equivalente al promedio real??
             promedio += precio
             promedio/= len(hint_row)
     # 1.
@@ -255,12 +284,18 @@ def ej4():
 
     '''
     dataset = "datasets_575912_1042673_2019 Ironman World Championship Results.csv"
-    actividad = ["Swim","Bike","Run"]
-    categoria = ["MPRO","M45-49","M25-29","M18-24"]
+    actividad = ["Swim","Bike","Run"] # InoveTip: si es una lista mejor poner el nombre en plural
+    categoria = ["MPRO","M45-49","M25-29","M18-24"] # InoveTip: si es una lista mejor poner el nombre en plural
 
 
     for i in range(len(categoria)):
         print("----------------------------------\n")
+        # InoveTip: Veo que el loop va de 0 a 2, y solo se usa ese "iterador" para acceder a las actividades,
+        # en ese caso donde solo se usa para acceder a las actividades, queda totalmente explicito y más legible
+        # realizar el bucle con:
+        # for actividad in actividades:
+        #     time = dataset_get_time(dataset,"Division",categoria[i],actividad)
+        # Mismo comentario apra categoria --> for categoria in categorias:
         for k in range(len(actividad)):
             time = dataset_get_time(dataset,"Division",categoria[i],actividad[k])
             print("Categoría:",categoria[i],"Actividad:",actividad[k],"\nTiempo [minutos]:")
